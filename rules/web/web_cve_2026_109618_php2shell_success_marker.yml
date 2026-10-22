@@ -1,0 +1,31 @@
+title: CVE-2026-109618 PHP2Shell Successful Exploitation
+id: b2e8f4a1-3c7d-4e9b-ad83-1f6e72345678
+status: experimental
+description: |
+    Detects response markers of successful PHP2Shell (CVE-2026-109618) code execution - the PoC marker
+    JACKALPOC or "uid=0" (id command output) in the HTTP response body of a POST to a PHP endpoint.
+    Requires WAF / reverse-proxy logging of response bodies.
+references:
+    - https://sansec.io/research/php2shell
+author: secamin
+date: 2026-10-22
+tags:
+    - attack.execution
+    - attack.t1190
+    - attack.discovery
+    - attack.t1082
+    - cve.2026-109618
+logsource:
+    category: proxy
+detection:
+    selection:
+        cs-method: 'POST'
+        c-uri|contains: '.php'
+    markers:
+        sc-body|contains:
+            - 'JACKALPOC'
+            - 'uid=0'
+    condition: selection and markers
+falsepositives:
+    - Unlikely; admin/debug pages that print id output
+level: critical
