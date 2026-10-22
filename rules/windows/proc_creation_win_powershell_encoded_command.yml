@@ -4,7 +4,7 @@ status: experimental
 description: Detects PowerShell launched with the -EncodedCommand parameter, often used to obfuscate malicious payloads.
 references:
     - https://attack.mitre.org/techniques/T1059/001/
-author: jnameen86
+author: secamin
 date: 2026-10-22
 tags:
     - attack.execution
