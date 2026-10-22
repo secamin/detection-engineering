@@ -1,5 +1,13 @@
 # Detection Engineering
 
+> [!CAUTION]
+> **Lab-developed content — tune before production use.**
+> All detection logic in this repository was developed and tested in a lab environment.
+> Before deploying, alter and tune each rule/query to match your own infrastructure — index names,
+> data sources/log source types, field names and SIEM attributes/parsers — and baseline thresholds
+> (e.g. byte sizes, counts) against your environment to avoid false positives or missed detections.
+> Provided as-is, for defensive use only, without warranty.
+
 SIEM detection content managed as code. Rules are written in [Sigma](https://github.com/SigmaHQ/sigma) as the single source of truth, mapped to MITRE ATT&CK, validated in CI, and converted to backend queries (Splunk SPL, Microsoft Sentinel KQL, Elastic).
 
 ## Repository layout
