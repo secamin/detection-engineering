@@ -1,0 +1,27 @@
+title: <Short, descriptive title>
+id: <generate a UUIDv4>
+status: experimental
+description: <What the rule detects and why it matters>
+references:
+    - <https://link-to-research-or-advisory>
+author: <Your name>
+date: YYYY-MM-DD
+modified: YYYY-MM-DD
+tags:
+    - attack.<tactic>          # e.g. attack.execution
+    - attack.t<technique_id>   # e.g. attack.t1059.001
+logsource:
+    category: <process_creation | network_connection | firewall | ...>
+    product: <windows | linux | aws | azure | ...>
+    service: <optional>
+detection:
+    selection:
+        FieldName|contains:
+            - 'value1'
+            - 'value2'
+    filter_legit:
+        FieldName: 'known-good'
+    condition: selection and not filter_legit
+falsepositives:
+    - <Known benign activity that may trigger>
+level: <informational | low | medium | high | critical>
