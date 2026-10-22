@@ -1,0 +1,45 @@
+# Detection Engineering
+
+SIEM detection content managed as code. Rules are written in [Sigma](https://github.com/SigmaHQ/sigma) as the single source of truth, mapped to MITRE ATT&CK, validated in CI, and converted to backend queries (Splunk SPL, Microsoft Sentinel KQL, Elastic).
+
+## Repository layout
+
+```
+rules/
+  windows/      Endpoint / Windows event & Sysmon detections
+  linux/        Linux auditd / syslog detections
+  network/      Firewall, proxy, IDS/IPS, DNS detections
+  cloud/        AWS / Azure / M365 / GCP detections
+templates/      Rule template to copy for new detections
+tests/          Sample events / test cases per rule
+docs/           Detection lifecycle, naming and contribution guide
+.github/        CI workflow (Sigma lint + conversion) and PR template
+```
+
+## Rule lifecycle
+
+`experimental` → `test` → `stable` → `deprecated`
+
+1. Copy `templates/sigma_rule_template.yml` into the right `rules/<domain>/` folder.
+2. Fill in logic, ATT&CK tags, false positives and level.
+3. Add a sample event or test notes under `tests/`.
+4. Open a pull request — CI validates the rule and converts it to Splunk SPL.
+5. After tuning in production, promote `status` to `stable`.
+
+## Local usage
+
+```bash
+pip install sigma-cli
+sigma plugin install splunk
+sigma check rules/
+sigma convert -t splunk -p splunk_windows rules/windows/
+```
+
+## Naming convention
+
+`<category>_<product>_<short_description>.yml`
+e.g. `proc_creation_win_powershell_encoded_command.yml`
+
+## License
+
+Detection rules: [Detection Rule License (DRL) 1.1](https://github.com/SigmaHQ/Detection-Rule-License) recommended.
