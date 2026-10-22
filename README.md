@@ -10,11 +10,19 @@ rules/
   linux/        Linux auditd / syslog detections
   network/      Firewall, proxy, IDS/IPS, DNS detections
   cloud/        AWS / Azure / M365 / GCP detections
+  web/          Web server / WAF / proxy detections
+detections/     Per-threat packs: write-up + native SIEM queries (QRadar, ArcSight, Sentinel, Cortex XDR)
 templates/      Rule template to copy for new detections
 tests/          Sample events / test cases per rule
 docs/           Detection lifecycle, naming and contribution guide
 .github/        CI workflow (Sigma lint + conversion) and PR template
 ```
+
+## Threat detection packs
+
+| Threat | Severity | Pack |
+|---|---|---|
+| CVE-2026-109618 / CVE-2026-109619 — PHP2Shell (PHP unauthenticated RCE) | Critical (CVSS 9.2) | [detections/CVE-2026-109618-php2shell](detections/CVE-2026-109618-php2shell/) |
 
 ## Rule lifecycle
 
