@@ -1,0 +1,35 @@
+title: CVE-2026-109618 PHP2Shell Public PoC Tooling Indicators
+id: 41d11721-7263-4f9d-a30a-d49cd3520911
+status: experimental
+description: |
+    Detects the unmodified public PHP2Shell (CVE-2026-109618 / CVE-2026-109619) PoC via its hardcoded
+    User-Agent and multipart boundary. High confidence but LOW coverage: these values are trivially changed,
+    so this rule only catches unmodified tooling (opportunistic scanning). Do not rely on it alone; pair with
+    the behaviour-based rules web_cve_2026_109618_php2shell_exploit_attempt.yml and
+    web_cve_2026_109618_php2shell_upload_progress_body.yml.
+references:
+    - https://github.com/eness/php2shell-CVE-2026-109618-CVE-2026-109619-PoC
+author: secamin
+date: 2026-10-22
+tags:
+    - attack.initial-access
+    - attack.t1190
+    - cve.2026-109618
+    - cve.2026-109619
+logsource:
+    category: webserver
+detection:
+    selection_ua:
+        cs-user-agent|contains: 'php2shell-109618'
+    selection_boundary:
+        cs-content-type|contains: 'B7kQpoc618'
+    condition: 1 of selection_*
+falsepositives:
+    - None expected (PoC-specific strings)
+level: high
+fields:
+    - c-ip
+    - cs-uri-stem
+    - cs-user-agent
+    - cs-content-type
+    - sc-status
