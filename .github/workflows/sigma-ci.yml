@@ -1,0 +1,42 @@
+name: Sigma CI
+
+on:
+  push:
+    branches: [main]
+    paths: ['rules/**']
+  pull_request:
+    paths: ['rules/**']
+
+jobs:
+  validate-and-convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install sigma-cli and backends
+        run: |
+          pip install sigma-cli
+          sigma plugin install splunk
+          sigma plugin install microsoft365defender || true
+          sigma plugin install elasticsearch
+
+      - name: Lint / validate rules
+        run: sigma check rules/
+
+      - name: Convert to Splunk SPL
+        run: sigma convert -t splunk -p splunk_windows rules/windows/ -o splunk_windows.spl || true
+
+      - name: Convert to Elastic (Lucene)
+        run: sigma convert -t lucene -p ecs_windows rules/windows/ -o elastic_windows.txt || true
+
+      - name: Upload converted queries
+        uses: actions/upload-artifact@v4
+        with:
+          name: converted-queries
+          path: |
+            *.spl
+            *.txt
